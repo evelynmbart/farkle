@@ -6,4 +6,3 @@ export function randDieValue(exclude: number | null): number {
   }
   return value;
 }
-  
