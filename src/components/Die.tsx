@@ -13,7 +13,14 @@ export function Die({ data, isFirstTurn }: Props) {
     data.setIsBanking(!data.isBanking);
   };
 
-  // TODO: Make this a die with pips
+  const renderPips = (value: number) => {
+    const pips = [];
+    for (let i = 0; i < value; i++) {
+      pips.push(<Pip key={i} />);
+    }
+    return pips;
+  };
+
   return (
     <Container
       isFirstTurn={isFirstTurn}
@@ -22,7 +29,11 @@ export function Die({ data, isFirstTurn }: Props) {
       isRolling={data.isRolling}
       onClick={handleClick}
     >
-      {isFirstTurn ? "--" : data.value}
+      {isFirstTurn
+        ? <PlaceholderText>?</PlaceholderText>
+        : <PipContainer value={data.value}>
+            {renderPips(data.value)}
+          </PipContainer>}
     </Container>
   );
 }
@@ -33,7 +44,7 @@ const Container =
     isFirstTurn: boolean,
     isBanked: boolean,
     isBanking: boolean,
-    isRolling: boolean,
+    isRolling: boolean
   } >
   `
   width: 100px;
@@ -43,11 +54,7 @@ const Container =
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-size: 2rem;
-  font-weight: bold;
   background: white;
-
   cursor: ${({ isFirstTurn, isRolling }) =>
     isFirstTurn || isRolling ? "not-allowed" : "grab"};
   &:active {
@@ -58,13 +65,83 @@ const Container =
     isBanking &&
     `
     border-color: goldenrod;
-    color: goldenrod;
   `}
 
   ${({ isBanked }) =>
     isBanked &&
     `
     border-color: green;
-    color: green;
   `}
+`;
+
+const PlaceholderText = styled.span`
+  font-size: 4rem;
+  font-weight: bold;
+`;
+
+const PipContainer =
+  styled.div <
+  { value: number } >
+  `
+  width: 80%;
+  height: 80%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  margin: 4px 0 0 4px;
+  
+  ${({ value }) => {
+    switch (value) {
+      case 1:
+        return `
+        display: flex;
+          justify-content: center;
+          align-items: center;
+        `;
+      case 2:
+        return `
+          & > :nth-child(1) { grid-area: 1 / 1; }
+          & > :nth-child(2) { grid-area: 3 / 3; }
+        `;
+      case 3:
+        return `
+          & > :nth-child(1) { grid-area: 1 / 1; }
+          & > :nth-child(2) { grid-area: 2 / 2; }
+          & > :nth-child(3) { grid-area: 3 / 3; }
+        `;
+      case 4:
+        return `
+          & > :nth-child(1) { grid-area: 1 / 1; }
+          & > :nth-child(2) { grid-area: 1 / 3; }
+          & > :nth-child(3) { grid-area: 3 / 1; }
+          & > :nth-child(4) { grid-area: 3 / 3; }
+        `;
+      case 5:
+        return `
+          & > :nth-child(1) { grid-area: 1 / 1; }
+          & > :nth-child(2) { grid-area: 1 / 3; }
+          & > :nth-child(3) { grid-area: 2 / 2; }
+          & > :nth-child(4) { grid-area: 3 / 1; }
+          & > :nth-child(5) { grid-area: 3 / 3; }
+        `;
+      case 6:
+        return `
+          & > :nth-child(1) { grid-area: 1 / 1; }
+          & > :nth-child(2) { grid-area: 2 / 1; }
+          & > :nth-child(3) { grid-area: 3 / 1; }
+          & > :nth-child(4) { grid-area: 1 / 3; }
+          & > :nth-child(5) { grid-area: 2 / 3; }
+          & > :nth-child(6) { grid-area: 3 / 3; }
+        `;
+      default:
+        return "";
+    }
+  }}
+`;
+
+const Pip = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: black;
 `;
