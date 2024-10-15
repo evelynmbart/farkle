@@ -182,10 +182,11 @@ const Content = styled.div`
 `;
 
 const FarkleTitle = styled.h1`
-  font-size: 4rem;
+  font-size: 3rem;
+  letter-spacing: 12px;
   font-weight: bold;
   text-align: center;
-  margin: 20px 0 0;
+  margin: 16px 0 0;
   background: linear-gradient(45deg, #ff00cc, #3333ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -319,32 +320,15 @@ const RollButton = styled.button`
     cursor: not-allowed !important;
     opacity: 0.7;
   }
-
-  animation: pulse 3s infinite alternate;
-
-  @keyframes pulse {
-    from {
-      transform: scale(1) rotate(-2deg);
-    }
-    to {
-      transform: scale(1.1) rotate(2deg);
-    }
-  }
 `;
 
 const CompleteTurnButton = styled(RollButton)`
   background-color: #00ced1;
   border-color: #ffd700;
+  transform: rotate(2deg);
 
   &:hover {
     background-color: #40e0d0;
-  }
-
-  animation: wiggle 3s infinite alternate;
-
-  @keyframes wiggle {
-    0% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
-    100% { transform: rotate(-3deg); }
+    transform: rotate(-2deg) scale(1.05);
   }
 `;
