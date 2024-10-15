@@ -7,7 +7,8 @@ import { calculateScore, isValidBank } from "./utils/farkle";
 export default function App() {
   const [isFirstTurn, setIsFirstTurn] = useState(true);
   const [currentScore, setCurrentScore] = useState(0);
-  const [totalScore, setTotalScore] = useState(0);
+  const [totalScores, setTotalScores] = useState([0, 0]);
+  const [currentPlayer, setCurrentPlayer] = useState(0);
 
   const die0 = useDie();
   const die1 = useDie();
@@ -103,9 +104,15 @@ export default function App() {
       }
     }
     dice.forEach(die => die.reset());
-    setTotalScore(totalScore + currentScore + bankScore);
+    setTotalScores(
+      totalScores.map(
+        (score, i) =>
+          i === currentPlayer ? score + currentScore + bankScore : score
+      )
+    );
     setCurrentScore(0);
     setIsFirstTurn(true);
+    setCurrentPlayer(currentPlayer === 0 ? 1 : 0);
   };
 
   useEffect(
@@ -119,7 +126,10 @@ export default function App() {
       const unbankedScore = calculateScore(unbankedValues);
       if (unbankedScore === 0) {
         alert("Farkle!");
-        // TODO: Handle farkle
+        dice.forEach(die => die.reset());
+        setIsFirstTurn(true);
+        setCurrentScore(0);
+        setCurrentPlayer(currentPlayer === 0 ? 1 : 0);
       }
     },
     [isDiceRolling, dice, isFirstTurn]
@@ -134,15 +144,21 @@ export default function App() {
       <Content>
         <FarkleTitle>Farkle</FarkleTitle>
         <PlayerScores>
-          <PlayerScore isCurrentPlayer={true}>
-            <PlayerName isCurrentPlayer={true}>Player 1</PlayerName>
+          <PlayerScore isCurrentPlayer={currentPlayer === 0}>
+            <PlayerName isCurrentPlayer={currentPlayer === 0}>
+              Player 1
+            </PlayerName>
             <ScoreValue>
-              {totalScore}
+              {totalScores[0]}
             </ScoreValue>
           </PlayerScore>
-          <PlayerScore isCurrentPlayer={false}>
-            <PlayerName isCurrentPlayer={false}>Player 2</PlayerName>
-            <ScoreValue>0</ScoreValue>
+          <PlayerScore isCurrentPlayer={currentPlayer === 1}>
+            <PlayerName isCurrentPlayer={currentPlayer === 1}>
+              Player 2
+            </PlayerName>
+            <ScoreValue>
+              {totalScores[1]}
+            </ScoreValue>
           </PlayerScore>
         </PlayerScores>
         <TurnScores>
