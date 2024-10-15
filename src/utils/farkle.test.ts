@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { calculateScore, isFarkle, isValidBank } from "./farkle";
+import { calculateScore, isValidBank } from "./farkle";
 
 describe("calculateScore", () => {
   test("returns 50 for single 5", () => {
@@ -71,12 +71,6 @@ describe("calculateScore", () => {
 
   test("random combo", () => {
     expect(calculateScore([3, 4, 3, 1])).toBe(100);
-  });
-});
-
-describe("isFarkle", () => {
-  test("returns true for farkle", () => {
-    expect(isFarkle([2, 3, 4])).toBe(true);
   });
 });
 

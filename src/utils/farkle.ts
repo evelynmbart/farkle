@@ -71,10 +71,6 @@ export function calculateScore(dice: number[]) {
   return score;
 }
 
-export function isFarkle(dice: number[]) {
-  return calculateScore(dice) === 0;
-}
-
 export function isValidBank(dice: number[]) {
   // If any of the dice can be removed and the score is the same, return false
   const score = calculateScore(dice);

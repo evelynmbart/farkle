@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { randDieValue } from "../utils/dice";
 
 export interface DieData {
@@ -9,6 +9,7 @@ export interface DieData {
   isBanking: boolean;
   setIsBanking: (isBanking: boolean) => void;
   isRolling: boolean;
+  reset: () => void;
 }
 
 export function useDie(): DieData {
@@ -29,6 +30,13 @@ export function useDie(): DieData {
     }, 100); // TODO: Make this slower as rollsLeft decreases
   };
 
+  const reset = () => {
+    setValue(1);
+    setIsBanked(false);
+    setIsBanking(false);
+    setIsRolling(false);
+  };
+
   return {
     value,
     roll,
@@ -37,5 +45,6 @@ export function useDie(): DieData {
     isBanking,
     setIsBanking,
     isRolling,
+    reset
   };
 }
