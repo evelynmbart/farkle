@@ -15,7 +15,6 @@ export default function App() {
   const die4 = useDie();
   const die5 = useDie();
   const dice = [die0, die1, die2, die3, die4, die5];
-  // FIXME: This is triggering turning false before the dice have finished rolling
   const isDiceRolling = dice.some(die => !die.isBanked && die.isRolling);
 
   const rollDice = (dice: DieData[]) => {

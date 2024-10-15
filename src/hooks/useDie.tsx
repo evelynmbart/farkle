@@ -23,8 +23,8 @@ export function useDie(): DieData {
       return;
     }
     setIsRolling(true);
+    setValue(value => randDieValue(value));
     setTimeout(() => {
-      setValue(value => randDieValue(value));
       roll(rollsLeft - 1);
     }, 100); // TODO: Make this slower as rollsLeft decreases
   };
