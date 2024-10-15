@@ -75,6 +75,14 @@ export default function App() {
       }
     }
 
+    // Handle hot dice -- all dice are banked, so roll them all again
+    if (diceToRoll.length === 0) {
+      diceToRoll = dice;
+      for (const die of dice) {
+        die.reset();
+      }
+    }
+
     rollDice(diceToRoll);
   }
 
