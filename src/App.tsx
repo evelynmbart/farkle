@@ -145,12 +145,14 @@ export default function App() {
             <ScoreValue>0</ScoreValue>
           </PlayerScore>
         </PlayerScores>
-        <Score>
-          Turn score: {currentScore}
-        </Score>
-        <Score>
-          Bank score: {bankScore}
-        </Score>
+        <TurnScores>
+          <Score>
+            Turn score: {currentScore}
+          </Score>
+          <Score>
+            Bank score: {bankScore}
+          </Score>
+        </TurnScores>
         <DiceContainer>
           {dice.map((die, index) =>
             <Die key={`die-${index}`} data={die} isFirstTurn={isFirstTurn} />
@@ -206,7 +208,7 @@ const FarkleTitle = styled.h1`
 const PlayerScores = styled.div`
   display: flex;
   justify-content: space-around;
-  margin: 20px 0;
+  margin: 12px 0;
   background: linear-gradient(45deg, #ff00cc, #3333ff);
   border-radius: 15px;
   padding: 10px;
@@ -248,21 +250,24 @@ const PlayerName =
   `}
 `;
 
+const TurnScores = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const ScoreValue = styled.div`
   font-size: 1.3rem;
   text-align: center;
   color: #00ffff;
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
-  animation: pulse 3s infinite alternate;
+  animation: pulse 2s infinite alternate;
 
   @keyframes pulse {
     from {
       transform: scale(1);
-      color: #00ffff;
     }
     to {
       transform: scale(1.3);
-      color: #00aaaa;
     }
   }
 `;
@@ -324,6 +329,7 @@ const RollButton = styled.button`
 
 const CompleteTurnButton = styled(RollButton)`
   background-color: #00ced1;
+  color: #ffffff;
   border-color: #ffd700;
   transform: rotate(2deg);
 

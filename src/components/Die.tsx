@@ -65,12 +65,18 @@ const Container =
     isBanking &&
     `
     border-color: goldenrod;
+    & ${Pip} {
+      background-color: goldenrod;
+    }
   `}
 
   ${({ isBanked }) =>
     isBanked &&
     `
     border-color: green;
+    & ${Pip} {
+      background-color: green;
+    }
   `}
 `;
 
