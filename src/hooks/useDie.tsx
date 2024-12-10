@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { randDieValue } from "../utils/dice";
 
 export interface DieData {
@@ -24,7 +24,7 @@ export function useDie(): DieData {
       return;
     }
     setIsRolling(true);
-    setValue(value => randDieValue(value));
+    setValue((value) => randDieValue(value));
     setTimeout(() => {
       roll(rollsLeft - 1);
     }, 100); // TODO: Make this slower as rollsLeft decreases
@@ -45,6 +45,6 @@ export function useDie(): DieData {
     isBanking,
     setIsBanking,
     isRolling,
-    reset
+    reset,
   };
 }
