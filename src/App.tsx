@@ -1,7 +1,7 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Die } from "./components/Die";
 import { DieData, useDie } from "./hooks/useDie";
-import { useEffect, useState } from "react";
 import { calculateScore, isValidBank } from "./utils/farkle";
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
   const die4 = useDie();
   const die5 = useDie();
   const dice = [die0, die1, die2, die3, die4, die5];
-  const isDiceRolling = dice.some(die => !die.isBanked && die.isRolling);
+  const isDiceRolling = dice.some((die) => !die.isBanked && die.isRolling);
 
   const rollDice = (dice: DieData[]) => {
     setIsFirstTurn(false);
@@ -30,8 +30,8 @@ export default function App() {
     const diceToRoll: DieData[] = [];
 
     const bankingDiceValues = dice
-      .filter(die => die.isBanking)
-      .map(die => die.value);
+      .filter((die) => die.isBanking)
+      .map((die) => die.value);
 
     // Check that there are some dice to be banked
     if (bankingDiceValues.length === 0) {
@@ -93,7 +93,7 @@ export default function App() {
 
   const handleCompleteTurnClick = () => {
     let bankScore = 0;
-    if (dice.some(die => die.isBanking)) {
+    if (dice.some((die) => die.isBanking)) {
       try {
         const { bankScore: newBankScore } = bank();
         bankScore = newBankScore;
@@ -103,11 +103,10 @@ export default function App() {
         }
       }
     }
-    dice.forEach(die => die.reset());
+    dice.forEach((die) => die.reset());
     setTotalScores(
-      totalScores.map(
-        (score, i) =>
-          i === currentPlayer ? score + currentScore + bankScore : score
+      totalScores.map((score, i) =>
+        i === currentPlayer ? score + currentScore + bankScore : score
       )
     );
     setCurrentScore(0);
@@ -115,28 +114,25 @@ export default function App() {
     setCurrentPlayer(currentPlayer === 0 ? 1 : 0);
   };
 
-  useEffect(
-    () => {
-      if (isDiceRolling || isFirstTurn) return;
+  useEffect(() => {
+    if (isDiceRolling || isFirstTurn) return;
 
-      // Check for farkle - if the unbanked dice have a currentScore of 0
-      const unbankedValues = dice
-        .filter(die => !die.isBanked)
-        .map(die => die.value);
-      const unbankedScore = calculateScore(unbankedValues);
-      if (unbankedScore === 0) {
-        alert("Farkle!");
-        dice.forEach(die => die.reset());
-        setIsFirstTurn(true);
-        setCurrentScore(0);
-        setCurrentPlayer(currentPlayer === 0 ? 1 : 0);
-      }
-    },
-    [isDiceRolling, dice, isFirstTurn]
-  );
+    // Check for farkle - if the unbanked dice have a currentScore of 0
+    const unbankedValues = dice
+      .filter((die) => !die.isBanked)
+      .map((die) => die.value);
+    const unbankedScore = calculateScore(unbankedValues);
+    if (unbankedScore === 0) {
+      alert("Farkle!");
+      dice.forEach((die) => die.reset());
+      setIsFirstTurn(true);
+      setCurrentScore(0);
+      setCurrentPlayer(currentPlayer === 0 ? 1 : 0);
+    }
+  }, [isDiceRolling, dice, isFirstTurn]);
 
   const bankScore = calculateScore(
-    dice.filter(die => die.isBanking).map(die => die.value)
+    dice.filter((die) => die.isBanking).map((die) => die.value)
   );
 
   return (
@@ -148,42 +144,35 @@ export default function App() {
             <PlayerName isCurrentPlayer={currentPlayer === 0}>
               Player 1
             </PlayerName>
-            <ScoreValue>
-              {totalScores[0]}
-            </ScoreValue>
+            <ScoreValue>{totalScores[0]}</ScoreValue>
           </PlayerScore>
           <PlayerScore isCurrentPlayer={currentPlayer === 1}>
             <PlayerName isCurrentPlayer={currentPlayer === 1}>
               Player 2
             </PlayerName>
-            <ScoreValue>
-              {totalScores[1]}
-            </ScoreValue>
+            <ScoreValue>{totalScores[1]}</ScoreValue>
           </PlayerScore>
         </PlayerScores>
         <TurnScores>
-          <Score>
-            Turn score: {currentScore}
-          </Score>
-          <Score>
-            Bank score: {bankScore}
-          </Score>
+          <Score>Turn score: {currentScore}</Score>
+          <Score>Bank score: {bankScore}</Score>
         </TurnScores>
         <DiceContainer>
-          {dice.map((die, index) =>
+          {dice.map((die, index) => (
             <Die key={`die-${index}`} data={die} isFirstTurn={isFirstTurn} />
-          )}
+          ))}
         </DiceContainer>
         <RollButton onClick={() => handleRollClick()}>
           {isFirstTurn ? "Roll" : "Bank & Roll"}
         </RollButton>
-        {!isFirstTurn &&
+        {!isFirstTurn && (
           <CompleteTurnButton
             onClick={() => handleCompleteTurnClick()}
             disabled={isDiceRolling}
           >
             Complete Turn
-          </CompleteTurnButton>}
+          </CompleteTurnButton>
+        )}
       </Content>
     </Container>
   );
@@ -192,6 +181,8 @@ export default function App() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  height: 80vh;
+  align-items: center;
 `;
 
 const Content = styled.div`
@@ -231,31 +222,25 @@ const PlayerScores = styled.div`
   box-shadow: 0 0 15px rgba(255, 105, 180, 0.7);
 `;
 
-const PlayerScore =
-  styled.div <
-  { isCurrentPlayer: boolean } >
-  `
+const PlayerScore = styled.div<{ isCurrentPlayer: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${props =>
+  background: ${(props) =>
     props.isCurrentPlayer ? "rgba(255, 255, 255, 0.2)" : "transparent"};
   padding: 4px 24px;
   border-radius: 10px;
-  box-shadow: ${props =>
+  box-shadow: ${(props) =>
     props.isCurrentPlayer ? "0 0 10px rgba(255, 255, 255, 0.5)" : "none"};
 `;
 
-const PlayerName =
-  styled.div <
-  { isCurrentPlayer: boolean } >
-  `
+const PlayerName = styled.div<{ isCurrentPlayer: boolean }>`
   font-size: 1.3rem;
   font-weight: bold;
-  color: ${props => (props.isCurrentPlayer ? "#00ffff" : "#ffd700")};
+  color: ${(props) => (props.isCurrentPlayer ? "#00ffff" : "#ffd700")};
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: 2px;
-  ${props =>
+  ${(props) =>
     props.isCurrentPlayer &&
     `
     animation: pulse 2s infinite alternate;
